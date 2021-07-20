@@ -16,7 +16,7 @@ components:
     cookieAuth:    
       type: apiKey
       in: cookie
-      name: token
+      name: Token
   schemas:
     testing_item:        
       type: object
@@ -203,7 +203,7 @@ paths:
                   records:
                     $ref: "#/components/schemas/records"       
       parameters:
-        - name: "token"
+        - name: "Token"
           in: header
           description: "登录鉴权token"
           required: true
@@ -300,7 +300,7 @@ paths:
                   summarys:
                     $ref: "#/components/schemas/summarys"       
       parameters:
-        - name: "token"
+        - name: "Token"
           in: header
           description: "登录鉴权token"
           required: true
