@@ -16,7 +16,7 @@ components:
     cookieAuth:    
       type: apiKey
       in: cookie
-      name: sid
+      name: token
   schemas:
     testing_item:        
       type: object
