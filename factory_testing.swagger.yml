@@ -1,0 +1,341 @@
+openapi: '3.0.2'
+
+info:
+  title: Factory Testing Server
+  version: '1.0'
+  description: factory testing interface"
+
+servers:
+  - url: http://api.xxx.test/factory
+    description: "factory testing .."
+
+components:
+  schemas:
+    testing_item:        
+      type: object
+      additionalProperties:
+        properties:
+          result:
+            type: boolean
+          msg:
+            type: string    
+    record:
+      type: object
+      required:
+        - "robot_class"
+        - "parts_sn"
+        - "parts_class"
+        - "result"
+      properties:
+        test_time:
+          type: string
+          format: date-time
+          description: "最后一个记录测试时间"
+        sn:
+          type: string          
+          description: "机器人序列号，可以不填写"       
+        robot_class:
+          type: string
+          
+          description: "机器人类型，如站岗/巡检，用户自定义"
+     
+        parts_sn:
+          type: string
+          description: "部件sn号"
+
+        parts_class:
+          type: string 
+
+          description: "部件分类,如地盘/上装"
+
+        result:
+          type: boolean
+          description: "整体测试结果"
+        items:
+          $ref: "#/components/schemas/testing_item"
+
+    records:
+      type: array
+      items: 
+        $ref: "#/components/schemas/record"
+
+    summary:
+      type: object
+      properties:
+        test_time:
+          type: string
+          format: date-time
+          description: "测试时间"
+        sn:
+          type: string          
+          description: "机器人序列号"       
+        robot_class:
+          type: string
+          description: "机器人类型，如站岗/巡检，用户自定义"
+  
+        parts_sn:
+          type: string
+          description: "部件sn号,可以不填写"
+        parts_class:
+          type: string 
+          description: "部件分类,如地盘/上装"
+        result:
+          type: boolean
+          description: "整体测试结果"
+        amount:
+          type: integer
+          description: "记录数量"
+
+    summarys:
+      type: array
+      items: 
+        $ref: "#/components/schemas/summary"
+
+
+
+    simple_result:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: "0: success, else: fail"
+        msg:
+          type: string
+          description: "错误消息"
+
+paths:
+  /logout:
+    get:
+      description: "登出"
+      parameters:
+        - name: "Token"
+          in: header
+          required: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/simple_result"
+
+  /login:
+    post:
+      description: "登录请求"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/simple_result"
+                
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  description: "用户"
+                passwd:
+                  type: string
+                  format: password
+                  description: "密码"
+               
+                
+  /api/v1/testings:
+    post:
+      description: "保存测试结果"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/simple_result"
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/record"
+           
+
+  /v1/testings:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json: 
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg: 
+                    type: string
+                  records:
+                    $ref: "#/components/schemas/records"       
+      parameters:
+        - name: "token"
+          in: header
+          description: "登录鉴权token"
+          required: true
+          schema:
+            type: string 
+
+        - name: "robot_class"
+          in: query
+          description: "那种类型机器人"
+          required: false
+          schema:
+            type: string   
+
+        - name: "parts_class"
+          in: query
+          description: "部件分类"
+          required: false
+          schema:
+            type: string   
+
+        - name: "parts_sn"
+          in: query
+          description: "部件id"
+          required: false
+          schema:
+            type: string
+
+        - name: "start_date"
+          in: query
+          description: "开始日期"
+          required: false
+          schema:
+            type: string
+            format: date
+
+        - name: "end_date"
+          in: query
+          description: "结束日期"
+          required: false
+          schema:
+            type: string
+            format: date   
+
+        - name: "skip"
+          in: query
+          description: "从第几条记录开始"
+          required: false
+          schema:
+            type: integer
+            default: 0
+
+        - name: "limit"
+          in: query
+          description: "起始记录id"
+          required: false
+          schema:
+            type: integer
+            default: 20
+
+        - name: "orderby"
+          in: query
+          description: "排序字段 test_time/parts_sn/amount"
+          schema:
+            type: string
+            enum: [test_time, parts_sn, amount]
+            default: "test_time"
+
+        - name: "order"
+          in: query
+          description: "排序规则 desc/asc"
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: "asc"
+        
+
+  /v1/testings/summary:
+    get:
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json: 
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: integer
+                  msg: 
+                    type: string
+                  summarys:
+                    $ref: "#/components/schemas/summarys"       
+      parameters:
+        - name: "token"
+          in: header
+          description: "登录鉴权token"
+          required: true
+          schema:
+            type: string 
+
+        - name: "robot_class"
+          in: query
+          required: false
+          description: "那种类型机器人"
+          schema:
+            type: string    
+         
+        - name: "parts_class"
+          in: query
+          description: "部件分类"
+          required: false
+          schema:
+            type: string   
+
+        - name: "parts_sn"
+          in: query
+          description: "部件id"
+          required: false
+          schema:
+            type: string
+
+        - name: "skip"
+          in: query
+          description: "跳过多少条记录"
+          required: false
+          schema:
+            type: integer
+            default: 0
+
+        - name: "limit"
+          in: query
+          description: "需要多少条"
+          required: false
+          schema:
+            type: integer
+            default: 20
+
+        - name: "orderby"
+          in: query
+          description: "排序字段 test_time/parts_sn/amount"
+          schema:
+            type: string
+            enum: [test_time, parts_sn, amount]
+            default: "test_time"
+        
+        - name: "order"
+          in: query
+          description: "排序规则 desc/asc"
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: "asc"
+        
+
+          
