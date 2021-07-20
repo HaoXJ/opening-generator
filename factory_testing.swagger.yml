@@ -91,6 +91,17 @@ components:
       items: 
         $ref: "#/components/schemas/summary"
 
+    login_info:        
+      type: object 
+      properties:
+        username:
+          type: string
+          format: username
+          description: "用户名"
+        password:
+          type: string    
+          format: password
+          description: "登录密码"  
 
 
     simple_result:
@@ -139,15 +150,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                user:
-                  type: string
-                  description: "用户"
-                passwd:
-                  type: string
-                  format: password
-                  description: "密码"
+              $ref: "#/components/schemas/login_info"
                
                 
   /api/v1/testings:
