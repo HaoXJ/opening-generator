@@ -1,4 +1,4 @@
-openapi: '3.0.2'
+openapi: '3.0.1'
 
 info:
   title: Factory Testing Server
@@ -8,101 +8,7 @@ info:
 servers:
   - url: http://api.xxx.test/factory
     description: "factory testing .."
-
-components:
-  schemas:
-    testing_item:        
-      type: object
-      additionalProperties:
-        properties:
-          result:
-            type: boolean
-          msg:
-            type: string    
-    record:
-      type: object
-      required:
-        - "robot_class"
-        - "parts_sn"
-        - "parts_class"
-        - "result"
-      properties:
-        test_time:
-          type: string
-          format: date-time
-          description: "最后一个记录测试时间"
-        sn:
-          type: string          
-          description: "机器人序列号，可以不填写"       
-        robot_class:
-          type: string
-          
-          description: "机器人类型，如站岗/巡检，用户自定义"
-     
-        parts_sn:
-          type: string
-          description: "部件sn号"
-
-        parts_class:
-          type: string 
-
-          description: "部件分类,如地盘/上装"
-
-        result:
-          type: boolean
-          description: "整体测试结果"
-        items:
-          $ref: "#/components/schemas/testing_item"
-
-    records:
-      type: array
-      items: 
-        $ref: "#/components/schemas/record"
-
-    summary:
-      type: object
-      properties:
-        test_time:
-          type: string
-          format: date-time
-          description: "测试时间"
-        sn:
-          type: string          
-          description: "机器人序列号"       
-        robot_class:
-          type: string
-          description: "机器人类型，如站岗/巡检，用户自定义"
-  
-        parts_sn:
-          type: string
-          description: "部件sn号,可以不填写"
-        parts_class:
-          type: string 
-          description: "部件分类,如地盘/上装"
-        result:
-          type: boolean
-          description: "整体测试结果"
-        amount:
-          type: integer
-          description: "记录数量"
-
-    summarys:
-      type: array
-      items: 
-        $ref: "#/components/schemas/summary"
-
-
-
-    simple_result:
-      type: object
-      properties:
-        code:
-          type: integer
-          description: "0: success, else: fail"
-        msg:
-          type: string
-          description: "错误消息"
-
+    
 paths:
   /logout:
     get:
@@ -339,3 +245,97 @@ paths:
         
 
           
+
+components:
+  schemas:
+    testing_item:        
+      type: object
+      additionalProperties:
+        properties:
+          result:
+            type: boolean
+          msg:
+            type: string    
+    record:
+      type: object
+      required:
+        - "robot_class"
+        - "parts_sn"
+        - "parts_class"
+        - "result"
+      properties:
+        test_time:
+          type: string
+          format: date-time
+          description: "最后一个记录测试时间"
+        sn:
+          type: string          
+          description: "机器人序列号，可以不填写"       
+        robot_class:
+          type: string
+          
+          description: "机器人类型，如站岗/巡检，用户自定义"
+     
+        parts_sn:
+          type: string
+          description: "部件sn号"
+
+        parts_class:
+          type: string 
+
+          description: "部件分类,如地盘/上装"
+
+        result:
+          type: boolean
+          description: "整体测试结果"
+        items:
+          $ref: "#/components/schemas/testing_item"
+
+    records:
+      type: array
+      items: 
+        $ref: "#/components/schemas/record"
+
+    summary:
+      type: object
+      properties:
+        test_time:
+          type: string
+          format: date-time
+          description: "测试时间"
+        sn:
+          type: string          
+          description: "机器人序列号"       
+        robot_class:
+          type: string
+          description: "机器人类型，如站岗/巡检，用户自定义"
+  
+        parts_sn:
+          type: string
+          description: "部件sn号,可以不填写"
+        parts_class:
+          type: string 
+          description: "部件分类,如地盘/上装"
+        result:
+          type: boolean
+          description: "整体测试结果"
+        amount:
+          type: integer
+          description: "记录数量"
+
+    summarys:
+      type: array
+      items: 
+        $ref: "#/components/schemas/summary"
+
+
+
+    simple_result:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: "0: success, else: fail"
+        msg:
+          type: string
+          description: "错误消息"
