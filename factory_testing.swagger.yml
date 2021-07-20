@@ -3,7 +3,7 @@ openapi: '3.0.2'
 info:
   title: Factory Testing Server
   version: '1.0'
-  description: factory testing interface"
+  description: 'factory testing interface'
 
 servers:
   - url: http://api.xxx.test/factory
@@ -105,8 +105,9 @@ components:
 
 paths:
   /logout:
-    get:
+    post:
       description: "登出"
+      operationId: "logout"
       parameters:
         - name: "Token"
           in: header
@@ -125,6 +126,7 @@ paths:
   /login:
     post:
       description: "登录请求"
+      operationId: "login"
       responses:
         '200':
           description: OK
@@ -151,6 +153,7 @@ paths:
   /api/v1/testings:
     post:
       description: "保存测试结果"
+      operationId: "InsertTesting"
       responses:
         '200':
           description: OK
@@ -168,6 +171,7 @@ paths:
 
   /v1/testings:
     get:
+      operationId: "getTestings"
       responses:
         '200':
           description: OK
@@ -262,6 +266,7 @@ paths:
 
   /v1/testings/summary:
     get:
+      operationId: "getTestingsSummary"
       responses:
         '200':
           description: OK
