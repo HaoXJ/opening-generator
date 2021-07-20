@@ -9,7 +9,14 @@ servers:
   - url: http://api.xxx.test/factory
     description: "factory testing .."
 
+
+
 components:
+  securitySchemes:
+    cookieAuth:    
+      type: apiKey
+      in: cookie
+      name: sid
   schemas:
     testing_item:        
       type: object
@@ -117,6 +124,8 @@ components:
 paths:
   /logout:
     post:
+      security:
+        - cookieAuth: []
       description: "登出"
       operationId: "logout"
       parameters:
@@ -155,6 +164,8 @@ paths:
                 
   /api/v1/testings:
     post:
+      security:
+        - cookieAuth: []
       description: "保存测试结果"
       operationId: "InsertTesting"
       responses:
@@ -174,6 +185,8 @@ paths:
 
   /v1/testings:
     get:
+      security:
+        - cookieAuth: []      
       operationId: "getTestings"
       responses:
         '200':
@@ -269,6 +282,8 @@ paths:
 
   /v1/testings/summary:
     get:
+      security:
+        - cookieAuth: []      
       operationId: "getTestingsSummary"
       responses:
         '200':
